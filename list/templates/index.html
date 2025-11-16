@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+     <button id="darkModeToggle" class="btn toggle-btn">🌙 Dark Mode</button>
+        <h1>📝 My To-Do List</h1>
+        <a href="/add" class="btn add-btn">+ Add New Task</a>
+        <div class="progress-container">
+    <div class="progress-bar" style="width: {{ progress }}%"></div>
+    <p>{{ progress }}% Completed</p>
+</div>
+
+        <table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Task</th>
+        <th>Status</th>
+        <th>Priority</th>
+        <th>Due Date</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Recurring</th>
+        <th>Actions</th>
+    </tr>
+</thead>
+<tbody>
+    {% for task in tasks %}
+    <tr class="{{ 'completed' if task[2]=='Completed' else '' }}">
+        <td>{{ task[0] }}</td>
+        <td>{{ task[1] }}</td>
+        <td>{{ task[2] }}</td>
+        <td>{{ task[3] }}</td>
+        <td>{{ task[4] if task[4] else '-' }}</td>
+        <td>{{ task[5] if task[5] else '-' }}</td>
+        <td>{{ task[6] if task[6] else '-' }}</td>
+        <td>{{ task[7] }}</td>
+        <td>
+            <a href="/toggle/{{ task[0] }}" class="btn toggle-btn">Toggle</a>
+            <a href="/update/{{ task[0] }}" class="btn edit-btn">Edit</a>
+            <a href="/delete/{{ task[0] }}" class="btn delete-btn">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+
+        </table>
+    </div>
+    <script>
+    const toggleBtn = document.getElementById("darkModeToggle");
+    toggleBtn.addEventListener("click", function() {
+        document.body.classList.toggle("dark-mode");
+        if (document.body.classList.contains("dark-mode")) {
+            toggleBtn.textContent = "☀️ Light Mode";
+        } else {
+            toggleBtn.textContent = "🌙 Dark Mode";
+        }
+    });
+</script>
+</body>
+</html>
